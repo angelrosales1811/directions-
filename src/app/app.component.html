@@ -1,0 +1,33 @@
+<div id="floating-panel">
+  <mat-form-field>
+    <mat-label>Start</mat-label>
+    <mat-select [(ngModel)]="coordsStart">
+      @for (place of places; track place) {
+      <mat-option [value]="place">{{ place.place }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>End:</mat-label>
+    <mat-select [(ngModel)]="coordsEnd">
+      <mat-option *ngFor="let place of places" [value]="place">{{
+        place.place
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-flat-button
+    (click)="calculateAndDisplayRoute()"
+    [disabled]="coordsStart.place == 'vacio' || coordsEnd.place == 'vacio'"
+  >
+    trazar ruta
+  </button>
+</div>
+
+<google-map height="60vh" width="94vw" [center]="center" [zoom]="zoom">
+  <map-directions-renderer
+    *ngIf="directionsResults$ | async as directionsResults"
+    [directions]="directionsResults"
+  ></map-directions-renderer>
+</google-map>
